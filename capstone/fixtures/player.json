@@ -1,0 +1,62 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+        "password": "pass1",
+        "last_login": null, "is_superuser": false, "username": "dhobson21", "first_name": "Dustin",
+        "last_name": "Hobson",
+        "email": "dhobson@gmail.com",
+        "is_staff": false,
+        "is_active": true, "date_joined": "2019-09-23T14:06:30.047Z"
+        }
+    },
+    {
+      "model": "capstone.player",
+      "pk": 1,
+      "fields": {
+        "zip_code": "37211",
+        "user_id": "1"
+      }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+        "password": "pass2",
+        "last_login": null, "is_superuser": false, "username": "CurtCutlery", "first_name": "Curt",
+        "last_name": "Cato",
+        "email": "curt@knives.com",
+        "is_staff": false,
+        "is_active": true, "date_joined": "2019-10-23T14:06:31.047Z"
+        }
+    },
+    {
+      "model": "capstone.player",
+      "pk": 2,
+      "fields": {
+        "zip_code": "37210",
+        "user_id": "2"
+      }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+        "password": "pass3",
+        "last_login": null, "is_superuser": false, "username": "DrillbitDrew", "first_name": "Drew",
+        "last_name": "Pazolla",
+        "email": "drew@gmail.com",
+        "is_staff": false,
+        "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+        }
+    },
+    {
+      "model": "capstone.player",
+      "pk": 3,
+      "fields": {
+        "zip_code": "37925",
+        "user_id": "3"
+      }
+    }
+ ]

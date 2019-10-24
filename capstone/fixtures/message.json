@@ -1,0 +1,24 @@
+[
+    {
+        "model": "capstone.message",
+        "pk": 1,
+        "fields": {
+            "event": "1",
+            "sender":"1",
+            "reciever":"2",
+            "message": "Someone wants to Join your game...will you let them?",
+            "open_time": null
+            }
+        },
+        {
+        "model": "capstone.message",
+        "pk": 2,
+        "fields": {
+            "event": "1",
+            "sender":"2",
+            "reciever":"1",
+            "message": "You have been approved to join this group",
+            "open_time": null
+            }
+        }
+]

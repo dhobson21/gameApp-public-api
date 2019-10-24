@@ -1,0 +1,52 @@
+[
+    {
+        "model": "capstone.game",
+        "pk": 1,
+        "fields": {
+            "name": "Monopoly",
+            "game": "1406",
+            "player": "1",
+            "host_descrip": "A game  for the rich to further delineate themselves from the poor"
+        }
+    },
+    {
+        "model": "capstone.game",
+        "pk": 2,
+        "fields": {
+            "name": "Coup",
+            "game": "131357",
+            "player": "1",
+            "host_descrip": "Lie to your friends to create a stronger bond!"
+        }
+    },
+    {
+        "model": "capstone.game",
+        "pk": 3,
+        "fields": {
+            "name": "Secret Hitler",
+            "game": "188834",
+            "player": "1",
+            "host_descrip": "Assasinate Hitler and save the Liberals"
+        }
+    },
+    {
+        "model": "capstone.game",
+        "pk": 4,
+        "fields": {
+            "name": "Catan",
+            "game": "13",
+            "player": "1",
+            "host_descrip": "Collect Resources and build stuff"
+        }
+    },
+    {
+        "model": "capstone.game",
+        "pk": 5,
+        "fields": {
+            "name": "Catan",
+            "game": "13",
+            "player": "2",
+            "host_descrip": "Colelct things and ruin your enemies"
+        }
+    }
+]
