@@ -1,0 +1,583 @@
+[
+    {
+        "model": "capstone.category",
+        "pk": 1,
+        "fields": {
+        "name": "Abstract Strategy"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 2,
+        "fields": {
+        "name": "Action / Dexterity"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 3,
+        "fields": {
+        "name": "Adventure"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 4,
+        "fields": {
+        "name": "Age of Reason"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 5,
+        "fields": {
+        "name": "American Civil War"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 6,
+        "fields": {
+        "name": "American Indian Wars"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 7,
+        "fields": {
+        "name": "American Revolutionary War"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 8,
+        "fields": {
+        "name": "American West"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 9,
+        "fields": {
+        "name": "Ancient"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 10,
+        "fields": {
+        "name": "Animals"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 11,
+        "fields": {
+        "name": "Arabian"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 12,
+        "fields": {
+        "name": "Aviation / Flight"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 13,
+        "fields": {
+        "name": "Bluffing"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 14,
+        "fields": {
+        "name": "Book"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 15,
+        "fields": {
+        "name": "Card Game"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 16,
+        "fields": {
+        "name": "City Building"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 17,
+        "fields": {
+        "name": "Civil War"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 18,
+        "fields": {
+        "name": "Civilization"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 19,
+        "fields": {
+        "name": "CCollectable Components"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 20,
+        "fields": {
+        "name": "Comic Book / Strip"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 21,
+        "fields": {
+        "name": "Deduction"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 22,
+        "fields": {
+        "name": "Dice"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 23,
+        "fields": {
+        "name": "Economic"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 24,
+        "fields": {
+        "name": "Educational"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 25,
+        "fields": {
+        "name": "Electronic"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 26,
+        "fields": {
+        "name": "Environmental"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 27,
+        "fields": {
+        "name": "Expansion for Base-game"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 28,
+        "fields": {
+        "name": "Exploration"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 29,
+        "fields": {
+        "name": "Fan Expansion"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 30,
+        "fields": {
+        "name": "Fantasy"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 31,
+        "fields": {
+        "name": "Farming"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 32,
+        "fields": {
+        "name": "Fighting"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 33,
+        "fields": {
+        "name": "Game System"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 34,
+        "fields": {
+        "name": "Horror"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 35,
+        "fields": {
+        "name": "Humor"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 36,
+        "fields": {
+        "name": "Industry / Manufacturing"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 37,
+        "fields": {
+        "name": "Korean War"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 38,
+        "fields": {
+        "name": "Mafia"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 39,
+        "fields": {
+        "name": "Math"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 40,
+        "fields": {
+        "name": "Mature / Adult"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 41,
+        "fields": {
+        "name": "Maze"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 42,
+        "fields": {
+        "name": "Medical"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 43,
+        "fields": {
+        "name": "Medieval"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 44,
+        "fields": {
+        "name": "Memory"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 45,
+        "fields": {
+        "name": "Miniatures"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 46,
+        "fields": {
+        "name": "Modern Warfare"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 47,
+        "fields": {
+        "name": "Mocies / TV / Radio theme"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 48,
+        "fields": {
+        "name": "Murder/Mystery"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 49,
+        "fields": {
+        "name": "Music"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 50,
+        "fields": {
+        "name": "Mythology"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 51,
+        "fields": {
+        "name": "Napoleonic"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 52,
+        "fields": {
+        "name": "Nautial"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 53,
+        "fields": {
+        "name": "Negotiation"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 54,
+        "fields": {
+        "name": "Novel-based"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 55,
+        "fields": {
+        "name": "Number"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 56,
+        "fields": {
+        "name": "Party Game"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 57,
+        "fields": {
+        "name": "Pike and Shot"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 58,
+        "fields": {
+        "name": "Pirates"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 59,
+        "fields": {
+        "name": "Political"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 60,
+        "fields": {
+        "name": "Post-Napoleonic"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 61,
+        "fields": {
+        "name": "Prehistoric"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk":62,
+        "fields": {
+        "name": "Print & Play"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 63,
+        "fields": {
+        "name": "Puzzle"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 64,
+        "fields": {
+        "name": "Racing"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 65,
+        "fields": {
+        "name": "Real-time"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 66,
+        "fields": {
+        "name": "Religious"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 67,
+        "fields": {
+        "name": "Renaissance"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 68,
+        "fields": {
+        "name": "Science Fiction"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 69,
+        "fields": {
+        "name": "Space Exploration"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 70,
+        "fields": {
+        "name": "Spies/Secret Agents"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 71,
+        "fields": {
+        "name": "Sports"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 72,
+        "fields": {
+        "name": "Territory Building"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 73,
+        "fields": {
+        "name": "Trains"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 74,
+        "fields": {
+        "name": "Transportation"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 75,
+        "fields": {
+        "name": "Travel"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 76,
+        "fields": {
+        "name": "Trivia"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 77,
+        "fields": {
+        "name": "Video Game Theme"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 78,
+        "fields": {
+        "name": "Vietname War"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 79,
+        "fields": {
+        "name": "Wargame"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 80,
+        "fields": {
+        "name": "Word Game"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 81,
+        "fields": {
+        "name": "World War I"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 82,
+        "fields": {
+        "name": "World War II"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 83,
+        "fields": {
+        "name": "Zombies"
+        }
+    }
+]

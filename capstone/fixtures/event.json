@@ -1,0 +1,31 @@
+[
+    {
+    "model": "capstone.event",
+    "pk": 1,
+    "fields": {
+        "name": "Monthly Monopoly",
+        "game":"1",
+        "address":"123 Fake St",
+        "zip_code":"37211",
+        "date":"2019-11-13",
+        "time": "19:30",
+        "recurring":"True",
+        "recurring_days":"30"
+        }
+    },
+    {
+    "model": "capstone.event",
+    "pk": 2,
+    "fields": {
+        "name": "Coup Yo",
+        "game":"2",
+        "address":"123 Fake St.",
+        "zip_code":"37211",
+        "date":"2019-12-25",
+        "time": "12:30",
+        "recurring":"False",
+        "recurring_days":null
+        }
+    }
+
+]

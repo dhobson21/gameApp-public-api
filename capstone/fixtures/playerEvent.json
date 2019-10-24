@@ -1,0 +1,33 @@
+[
+    {
+        "model": "capstone.playerEvent",
+        "pk": 1,
+        "fields": {
+            "event": "1",
+            "player": "1",
+            "has_played": "True",
+            "is_approved": "True"
+        }
+    },
+    {
+        "model": "capstone.playerEvent",
+        "pk": 2,
+        "fields": {
+            "event": "1",
+            "player": "2",
+            "has_played": "True",
+            "is_approved": "True"
+        }
+    },
+    {
+        "model": "capstone.playerEvent",
+        "pk": 3,
+        "fields": {
+            "event": "1",
+            "player": "3",
+            "has_played": "True",
+            "is_approved": "False"
+        }
+    }
+
+]
