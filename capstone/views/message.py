@@ -15,6 +15,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from capstone.models import Event, Player
 from .event import EventSerializer
 from .player import PlayerSerializer
+import datetime
 
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
@@ -69,6 +70,19 @@ class Messages(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+    def update(self, request, pk=None):
+        """Handle PUT requests for a message
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        message = Message.objects.get(pk=pk)
+        message.open_time = datetime.date.today()
+
+        message.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def list(self, request):
         """Handle GET requests to game Categories resource

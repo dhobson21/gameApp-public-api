@@ -11,6 +11,7 @@ router.register(r'category', Categories, 'category')
 router.register(r'message', Messages, 'message')
 router.register(r'event', Events, 'event')
 router.register(r'game', Games, 'game')
+router.register(r'playerevent', PlayerEvents, 'playerevent')
 
 
 

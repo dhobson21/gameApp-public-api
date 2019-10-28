@@ -1,4 +1,5 @@
 from .player import Players
+from .playerEvent import PlayerEvents
 from .register import register_user
 from .register import login_user
 from .user import Users
