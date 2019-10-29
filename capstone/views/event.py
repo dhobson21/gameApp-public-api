@@ -1,12 +1,14 @@
 """View module for handling requests about park areas"""
+import json
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from capstone.models import Player, Game, Event
+from capstone.models import Player, Game, Event, PlayerEvent
 from .game import GameSerializer
 from .player import PlayerSerializer
+from .playerEvent import PlayerEventSerializer
 from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
 
 
@@ -59,8 +61,24 @@ class Events(ViewSet):
         new_event.game = game
         new_event.save()
 
-        serializer = EventSerializer(new_event, context={'request': request})
 
+
+
+
+        # When event created, also create PlayerEvent for event host
+
+        new_player_event = PlayerEvent()
+        player = Player.objects.get(user=request.auth.user)
+        new_player_event.player = player
+        event = Event.objects.get(pk= int(json.dumps(new_event.id)))
+        # Change this to input for host of event
+        new_player_event.has_played = "True"
+        new_player_event.is_approved = "True"
+        new_player_event.event = event
+
+        new_player_event.save()
+
+        serializer = EventSerializer(new_event, context={'request': request})
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
@@ -83,6 +101,8 @@ class Events(ViewSet):
             event1['time']=event.time
             event1['recurring']=event.recurring
             event1['recurring_days']=event.recurring_days
+            event1['player_list'] = []
+            event1['player_list'] = event.player_list
             game1={}
             game1['name'] = event.game.name
             player = Player.objects.get(user=event.game.player.user)
@@ -184,6 +204,11 @@ class Events(ViewSet):
             event1['zip_code']=event.zip_code
             event1['date']=event.date
             event1['time']=event.time
+            event1['player_list'] = []
+            for player in event.player_list:
+                playerObj = PlayerSerializer(player, context={'request': request})
+                event1['player_list'].append(playerObj.data)
+
             event1['recurring']=event.recurring
             event1['recurring_days']=event.recurring_days
             game1={}

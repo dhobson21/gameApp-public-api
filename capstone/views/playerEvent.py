@@ -12,7 +12,6 @@ from rest_framework import serializers
 from rest_framework import status
 from capstone.models import PlayerEvent, Player, Event
 from .player import PlayerSerializer
-from .event import EventSerializer
 import datetime
 
 
@@ -23,7 +22,6 @@ class PlayerEventSerializer(serializers.HyperlinkedModelSerializer):
         serializers
     """
     player = PlayerSerializer(many=False)
-    event = EventSerializer(many=False)
     class Meta:
         model = PlayerEvent
         url = serializers.HyperlinkedIdentityField(
