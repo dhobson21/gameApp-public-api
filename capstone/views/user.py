@@ -51,7 +51,7 @@ class Users(ViewSet):
     def list(self, request):
         """Handle GET requests to customers resource
         Author: Dustin Hobson
-        Purpose: Allow a user to communicate with the Bangazon database to retrieve  list of users
+        Purpose: Allow a user to communicate with the gameApp database to retrieve  list of users
         Methods:  GET
 
         Returns:
