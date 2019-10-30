@@ -227,6 +227,8 @@ class Events(ViewSet):
             game1['thumb_nail'] = BGGObj.thumbnail
             event1['game'] = game1
 
+            event1['need_players'] = event.need_players
+
             # Event model method compairing game max_players against player_list and returning a boolean of True if player_list >= max_players
             event1['is_full'] = event.is_full
 
