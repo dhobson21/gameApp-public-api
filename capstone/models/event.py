@@ -38,6 +38,17 @@ class Event(models.Model):
             return True
         else:
             return False
+    @property
+    def need_players(self):
+        gameObj = Game.objects.get(pk=self.game_id)
+        bgg= BGGClient()
+        game = bgg.game(game_id=str(gameObj.game))
+
+        if len(self.player_list) < int(game.min_players):
+            players_needed = int(game.min_players)- len(self.player_list)
+            return players_needed
+        else:
+            return 0
 
     @property
     def user_player(self):
