@@ -256,6 +256,8 @@ class Events(ViewSet):
         game = self.request.query_params.get('game', None)
         # getting events that are not full
         is_full= self.request.query_params.get('is_full', None)
+
+        # if there is any query_param then  query param fills up new_list and event_list becomes new list--if not, event_list stays event_list
         if (user_player) or (category) or (zip_code) or (game) or (is_full):
             if user_player is not None:
                 for event in event_list:
