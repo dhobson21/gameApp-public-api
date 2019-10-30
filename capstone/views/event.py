@@ -235,6 +235,7 @@ class Events(ViewSet):
             event_list.append(event1)
 
         user_player = self.request.query_params.get('user_player', None)
+        category = self.request.query_params.get('category', None)
 
         if user_player is not None:
             for event in event_list:
@@ -243,6 +244,17 @@ class Events(ViewSet):
                 if event['user_player'] is True:
                     new_list.append(event)
             event_list = new_list
+
+        if category is not None:
+            new_list = []
+            for event in event_list:
+                for cat in event['game']['categories']:
+                    if str(cat) == str(category):
+                        new_list.append(event)
+            event_list = new_list
+
+
+
 
 
 
