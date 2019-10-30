@@ -3,6 +3,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from .game import Game
 from .player import Player
 from django.contrib.auth.models import User
+from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
+from django.http import HttpRequest
+
 
 class Event(models.Model):
 
@@ -24,6 +27,37 @@ class Event(models.Model):
             player = Player.objects.get(user=str(playerEvent.player_id))
             playerList.append(player)
         return playerList
+
+    @property
+    def is_full(self):
+        gameObj = Game.objects.get(pk=self.game_id)
+        bgg= BGGClient()
+        game = bgg.game(game_id=str(gameObj.game))
+
+        if len(self.player_list) >= int(game.max_players):
+            return True
+        else:
+            return False
+
+    @property
+    def user_player(self):
+        try:
+            return self.__user_player
+        except AttributeError:
+            return "error somewhere"
+
+    @user_player.setter
+    def user_player(self, request):
+        id = request.auth.user_id
+        self.__user_player = False
+        for player in self.player_list:
+            if player.id == id:
+                self.__user_player = True
+
+
+
+
+
 
 
 
