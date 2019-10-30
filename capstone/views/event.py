@@ -10,6 +10,7 @@ from .game import GameSerializer
 from .player import PlayerSerializer
 from .playerEvent import PlayerEventSerializer
 from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
+import datetime
 
 
 
@@ -226,7 +227,10 @@ class Events(ViewSet):
             game1['thumb_nail'] = BGGObj.thumbnail
             event1['game'] = game1
 
+            # Event model method compairing game max_players against player_list and returning a boolean of True if player_list >= max_players
             event1['is_full'] = event.is_full
+
+            # sending request into event .user_player method to obtain info about logged in user to determine if they are a player on the player_list
             event.user_player = request
             event1['user_player'] = event.user_player
 
@@ -237,11 +241,10 @@ class Events(ViewSet):
                 playerObj = PlayerSerializer(player, context={'request': request})
                 event1['player_list'].append(playerObj.data)
 
-            # Event model method compairing game max_players against player_list and returning a boolean of True if player_list >= max_players
-
-            # sending request into event .user_player method to obtain info about logged in user to determine if they are a player on the player_list
-
-            event_list.append(event1)
+            # comparing date of event to today's date. If event has happened--it is not added to event_list and sent back to user
+            today = datetime.date.today()
+            if event1['date'] >=today:
+                event_list.append(event1)
         # query params for:
         #  getting events a user is participating in
         user_player = self.request.query_params.get('user_player', None)
