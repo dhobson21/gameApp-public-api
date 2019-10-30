@@ -13,6 +13,7 @@ from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
 
 
 
+
 '''
 auther: Dustin Hobson
 purpose: Allow a user to communicate with the gameApp database to GET PUT POST and DELETE event entries.
@@ -105,7 +106,6 @@ class Events(ViewSet):
                 playerObj = PlayerSerializer(player, context={'request': request})
                 event1['player_list'].append(playerObj.data)
             event1['is_full'] = event.is_full
-            event1['is_full'] = event.is_full
             game1={}
             game1['name'] = event.game.name
             player = Player.objects.get(user=event.game.player.user)
@@ -191,11 +191,13 @@ class Events(ViewSet):
             Response -- JSON serialized list of park areas
         """
         events = Event.objects.all()
+
         bgg = BGGClient()
         event_list = []
 
 
 
+        new_list = []
         for event in events:
 
             BGGObj = bgg.game(game_id=str(event.game.game))
@@ -212,6 +214,8 @@ class Events(ViewSet):
                 playerObj = PlayerSerializer(player, context={'request': request})
                 event1['player_list'].append(playerObj.data)
             event1['is_full'] = event.is_full
+            event.user_player = request
+            event1['user_player'] = event.user_player
             event1['recurring']=event.recurring
             event1['recurring_days']=event.recurring_days
             game1={}
@@ -229,6 +233,21 @@ class Events(ViewSet):
             game1['thumb_nail'] = BGGObj.thumbnail
             event1['game'] = game1
             event_list.append(event1)
+
+        user_player = self.request.query_params.get('user_player', None)
+
+        if user_player is not None:
+            for event in event_list:
+                # var = event.user_player
+                var2 = event['user_player']
+                if event['user_player'] is True:
+                    new_list.append(event)
+            event_list = new_list
+
+
+
+
+
 
         # game = self.request.query_params.get('game', None)
         # zip_code = self.request.query_params.get('zip_code', None)

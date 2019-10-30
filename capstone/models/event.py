@@ -4,6 +4,7 @@ from .game import Game
 from .player import Player
 from django.contrib.auth.models import User
 from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
+from django.http import HttpRequest
 
 
 class Event(models.Model):
@@ -37,6 +38,25 @@ class Event(models.Model):
             return True
         else:
             return False
+
+    @property
+    def user_player(self):
+        try:
+            return self.__user_player
+        except AttributeError:
+            return "error somewhere"
+
+    @user_player.setter
+    def user_player(self, request):
+        id = request.auth.user_id
+        self.__user_player = False
+        for player in self.player_list:
+            if player.id == id:
+                self.__user_player = True
+
+
+
+
 
 
 
