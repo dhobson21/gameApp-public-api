@@ -101,8 +101,11 @@ class Events(ViewSet):
             event1['time']=event.time
             event1['recurring']=event.recurring
             event1['recurring_days']=event.recurring_days
-            event1['player_list'] = []
-            event1['player_list'] = event.player_list
+            for player in event.player_list:
+                playerObj = PlayerSerializer(player, context={'request': request})
+                event1['player_list'].append(playerObj.data)
+            event1['is_full'] = event.is_full
+            event1['is_full'] = event.is_full
             game1={}
             game1['name'] = event.game.name
             player = Player.objects.get(user=event.game.player.user)
@@ -208,7 +211,7 @@ class Events(ViewSet):
             for player in event.player_list:
                 playerObj = PlayerSerializer(player, context={'request': request})
                 event1['player_list'].append(playerObj.data)
-
+            event1['is_full'] = event.is_full
             event1['recurring']=event.recurring
             event1['recurring_days']=event.recurring_days
             game1={}
