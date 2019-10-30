@@ -251,39 +251,42 @@ class Events(ViewSet):
         zip_code = self.request.query_params.get('zip_code', None)
         # getting events that are playing a certain game
         game = self.request.query_params.get('game', None)
-
-        if user_player is not None:
-            for event in event_list:
-                if str(event['user_player']) == user_player:
-                    new_list.append(event)
-
-
-        if category is not None:
-            for event in event_list:
-                for cat in event['game']['categories']:
-                    if str(cat) == str(category):
+        # getting events that are not full
+        is_full= self.request.query_params.get('is_full', None)
+        if (user_player) or (category) or (zip_code) or (game) or (is_full):
+            if user_player is not None:
+                for event in event_list:
+                    if (str(event['user_player'])  == user_player) & (event not in new_list):
                         new_list.append(event)
 
+            if category is not None:
+                for event in event_list:
+                    for cat in event['game']['categories']:
+                        if (str(cat) == str(category)) & (event not in new_list):
+                            new_list.append(event)
 
-        if zip_code is not None:
-            for event in event_list:
-                if str(event['zip_code']) == zip_code:
-                    new_list.append(event)
+            if zip_code is not None:
+                for event in event_list:
+                    if (str(event['zip_code']) == zip_code) & (event not in new_list):
+                        new_list.append(event)
 
-        if game is not None:
-            for event in event_list:
-                if event['game']['name'].lower() == game.lower():
-                    new_list.append(event)
+            if game is not None:
+                for event in event_list :
+                    if (event['game']['name'].lower() == game.lower()) & (event not in new_list):
+                        new_list.append(event)
 
-        # parse new_list objects for duplicate--Can't use set here which is annoying
-        parse_list = []
-        for event in new_list:
-            if event in parse_list:
-                pass
-            else:
-                parse_list.append(event)
+            if is_full is not None:
+                for event in event_list:
+                    if(str(event['is_full']) == is_full) & (event not in new_list):
+                        new_list.append(event)
 
-        event_list = parse_list
+            event_list = new_list
+        else:
+            pass
+
+
+
+
 
 
 
