@@ -191,13 +191,11 @@ class Events(ViewSet):
             Response -- JSON serialized list of park areas
         """
         events = Event.objects.all()
-
         bgg = BGGClient()
         event_list = []
-
-
-
         new_list = []
+
+        # Building my own event dictionary using BGG API and Event object created by user
         for event in events:
 
             BGGObj = bgg.game(game_id=str(event.game.game))
@@ -209,49 +207,82 @@ class Events(ViewSet):
             event1['zip_code']=event.zip_code
             event1['date']=event.date
             event1['time']=event.time
-            event1['player_list'] = []
-            for player in event.player_list:
-                playerObj = PlayerSerializer(player, context={'request': request})
-                event1['player_list'].append(playerObj.data)
-            event1['is_full'] = event.is_full
-            event.user_player = request
-            event1['user_player'] = event.user_player
             event1['recurring']=event.recurring
             event1['recurring_days']=event.recurring_days
+
+            # Creating custom game object out of BGG API and game info from user
             game1={}
-            game1['host_name'] = event.game.name
+            game1['name'] = event.game.name
             player = Player.objects.get(user=event.game.player.user)
             playerObj = PlayerSerializer(player, context={'request': request})
-            game1['player'] = playerObj.data
-            game1['host_descrip'] = event.game.host_descrip
-            game1['max_players'] = BGGObj.max_players
+            game1['owner'] = playerObj.data
+            game1['owner_descrip'] = event.game.host_descrip
             game1['min_players'] = BGGObj.min_players
+            game1['max_players'] = BGGObj.max_players
             game1['categories'] = []
             for category in BGGObj.categories:
                 game1['categories'].append(category)
             game1['image'] = BGGObj.image
             game1['thumb_nail'] = BGGObj.thumbnail
             event1['game'] = game1
+
+            event1['is_full'] = event.is_full
+            event.user_player = request
+            event1['user_player'] = event.user_player
+
+            event1['player_list'] = []
+
+            # serializing each player in the event method that gathers a list of approved players----NOT SURE I TO DO THIS
+            for player in event.player_list:
+                playerObj = PlayerSerializer(player, context={'request': request})
+                event1['player_list'].append(playerObj.data)
+
+            # Event model method compairing game max_players against player_list and returning a boolean of True if player_list >= max_players
+
+            # sending request into event .user_player method to obtain info about logged in user to determine if they are a player on the player_list
+
             event_list.append(event1)
-
+        # query params for:
+        #  getting events a user is participating in
         user_player = self.request.query_params.get('user_player', None)
+        # getting events that have a game with a category query
         category = self.request.query_params.get('category', None)
-
-        if user_player is not None:
-            for event in event_list:
-                # var = event.user_player
-                var2 = event['user_player']
-                if event['user_player'] is True:
-                    new_list.append(event)
-            event_list = new_list
-
-        if category is not None:
-            new_list = []
-            for event in event_list:
-                for cat in event['game']['categories']:
-                    if str(cat) == str(category):
+        # getting events that are taking place in a zip code query
+        zip_code = self.request.query_params.get('zip_code', None)
+        # getting events that are playing a certain game
+        game = self.request.query_params.get('game', None)
+        # getting events that are not full
+        is_full= self.request.query_params.get('is_full', None)
+        if (user_player) or (category) or (zip_code) or (game) or (is_full):
+            if user_player is not None:
+                for event in event_list:
+                    if (str(event['user_player'])  == user_player) & (event not in new_list):
                         new_list.append(event)
+
+            if category is not None:
+                for event in event_list:
+                    for cat in event['game']['categories']:
+                        if (str(cat) == str(category)) & (event not in new_list):
+                            new_list.append(event)
+
+            if zip_code is not None:
+                for event in event_list:
+                    if (str(event['zip_code']) == zip_code) & (event not in new_list):
+                        new_list.append(event)
+
+            if game is not None:
+                for event in event_list :
+                    if (event['game']['name'].lower() == game.lower()) & (event not in new_list):
+                        new_list.append(event)
+
+            if is_full is not None:
+                for event in event_list:
+                    if(str(event['is_full']) == is_full) & (event not in new_list):
+                        new_list.append(event)
+
             event_list = new_list
+        else:
+            pass
 
 
 
@@ -261,24 +292,11 @@ class Events(ViewSet):
 
 
 
-        # game = self.request.query_params.get('game', None)
-        # zip_code = self.request.query_params.get('zip_code', None)
-        # category = self.request.query_params.get('payment_id', None)
-        # if customer is not None:
-        #     if complete == "0":
-        #         orders = orders.filter(customer__id=customer, payment_type__id__isnull=True)
-        #     if complete == "1":
-        #         orders = orders.filter(customer__id=customer, payment_type__id__isnull=False)
 
-        # if payment is not None:
-        #     orders = orders.filter(payment_type__id=payment)
-        # if complete is not None:
-        #     print("EEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-        #     if complete == "1":
-        #         orders = orders.filter(payment_type__id__isnull=False)
-        #     elif complete == "0":
-        #         orders = orders.filter(payment_type__id__isnull=True)
 
-        # serializer = EventSerializer(
-        #     events, many=True, context={'request': request})
+
+
+
+
+
         return Response(event_list)
