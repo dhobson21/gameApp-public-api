@@ -30,7 +30,7 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Message
         url = serializers.HyperlinkedIdentityField(
-            view_name='message',
+            view_name='messages',
             lookup_field='id'
         )
         fields = ('id', 'url', 'event','sender','reciever','message', 'open_time')

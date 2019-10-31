@@ -1,4 +1,7 @@
 from django.db import models
+from .player import Player
+from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
+
 
 
 class Category(models.Model):
