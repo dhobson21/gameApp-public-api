@@ -26,7 +26,7 @@ class GameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Game
         url = serializers.HyperlinkedIdentityField(
-            view_name='game',
+            view_name='games',
             lookup_field='id'
         )
         fields = ('id', 'url', 'game','name','player','host_descrip')
@@ -77,6 +77,7 @@ class Games(ViewSet):
             game1['host_descrip'] = game.host_descrip
             game1['max_players'] = BGGObj.max_players
             game1['min_players'] = BGGObj.min_players
+            game1['category_ids'] = game.category_ids
             game1['categories'] = []
             for category in BGGObj.categories:
                 game1['categories'].append(category)
@@ -131,12 +132,14 @@ class Games(ViewSet):
         """
         # Creating game dictionary of custom info from game object and API boardgame object so user can see info from both
         bgg = BGGClient()
-        player = Player.objects.get(user=request.auth.user)
-        games = Game.objects.filter(player=player)
+
+        games = Game.objects.all()
         game_list = []
+        collection = []
         for game in games:
             BGGObj = bgg.game(game_id=str(game.game))
             game1={}
+            game1['id'] = game.id
             game1['name'] = game.name
             game1["api_id"] = game.game
             owner = Player.objects.get(user=game.player.user)
@@ -145,15 +148,38 @@ class Games(ViewSet):
             game1['host_descrip'] = game.host_descrip
             game1['max_players'] = BGGObj.max_players
             game1['min_players'] = BGGObj.min_players
-            game1['categories'] = []
+            game1['category_ids'] = game.category_ids
+            game1['category_names'] = []
             for category in BGGObj.categories:
-                game1['categories'].append(category)
+                game1['category_names'].append(category)
             game1['image'] = BGGObj.image
             game1['thumb_nail'] = BGGObj.thumbnail
             game_list.append(game1)
 
 
+        # Query param to fetch a logged in user's games
+        user_game = self.request.query_params.get('user', None)
+        # query param to fetch games by category
+        category = self.request.query_params.get('category', None)
 
-        # serializer = GameSerializer(
-        #     games, many=True, context={'request': request})
+        if self.request.query_params:
+            if user_game is not None:
+                for game in game_list:
+                    if (game['player']['id'] == request.auth.user_id) & (game not in collection):
+                        collection.append(game)
+
+
+            if category is not None:
+                for game in game_list:
+                    for id in game["category_ids"]:
+                        if (str(id) ==category) & (game not in collection):
+                            collection.append(game)
+            game_list = collection
+        else:
+            pass
+
+
+
+
+
         return Response(game_list)

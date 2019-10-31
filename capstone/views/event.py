@@ -33,7 +33,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Event
         url = serializers.HyperlinkedIdentityField(
-            view_name='event',
+            view_name='events',
             lookup_field='id'
         )
         fields = ('id', 'url', 'name', 'game', 'description', 'address', 'zip_code', 'date', 'time', 'recurring', 'recurring_days')
@@ -73,8 +73,7 @@ class Events(ViewSet):
         player = Player.objects.get(user=request.auth.user)
         new_player_event.player = player
         event = Event.objects.get(pk= int(json.dumps(new_event.id)))
-        # Change this to input for host of event
-        new_player_event.has_played = "True"
+        new_player_event.has_played = request.data['has_played']
         new_player_event.is_approved = "True"
         new_player_event.event = event
 
@@ -260,7 +259,7 @@ class Events(ViewSet):
         is_full= self.request.query_params.get('is_full', None)
 
         # if there is any query_param then  query param fills up new_list and event_list becomes new list--if not, event_list stays event_list
-        if (user_player) or (category) or (zip_code) or (game) or (is_full):
+        if self.request.query_params:
             if user_player is not None:
                 for event in event_list:
                     if (str(event['user_player'])  == user_player) & (event not in new_list):

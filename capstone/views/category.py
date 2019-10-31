@@ -10,7 +10,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from capstone.models import Category
+from capstone.models import Category, Game
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
@@ -23,7 +23,7 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
         url = serializers.HyperlinkedIdentityField(
-            view_name='category',
+            view_name='categories',
             lookup_field='id'
         )
         fields = ('id', 'url', 'name')
@@ -33,19 +33,7 @@ class Categories(ViewSet):
     """Game categories for game app Park"""
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    # def create(self, request):
-    #     """Handle POST operations
 
-    #     Returns:
-    #         Response -- JSON serialized product category instance
-    #     """
-    #     new_product_category = Category()
-    #     new_product_category.name = request.data["name"]
-    #     new_product_category.save()
-
-    #     serializer = CategorySerializer(new_product_category, context={'request': request})
-
-    #     return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single park area
@@ -66,8 +54,15 @@ class Categories(ViewSet):
         Returns:
             Response -- JSON serialized list of park ProductCategorys
         """
+        # This only returns game categories that have games that fill that category
         category = Category.objects.all()
+        games = Game.objects.all()
+        cat_set = set()
+        for game in games:
+            for id in game.category_ids:
+                cat_set.add(id)
+        new_cat = category.filter(pk__in=cat_set)
 
         serializer = CategorySerializer(
-            category, many=True, context={'request': request})
+            new_cat, many=True, context={'request': request})
         return Response(serializer.data)

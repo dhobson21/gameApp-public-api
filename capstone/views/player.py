@@ -14,7 +14,7 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Player
         url = serializers.HyperlinkedIdentityField(
-            view_name='player',
+            view_name='players',
             lookup_field = 'id'
 
         )

@@ -25,7 +25,7 @@ class PlayerEventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PlayerEvent
         url = serializers.HyperlinkedIdentityField(
-            view_name='playerevent',
+            view_name='playerevents',
             lookup_field='id'
         )
         fields = ('id', 'url', 'player', 'event', 'has_played', 'is_approved')

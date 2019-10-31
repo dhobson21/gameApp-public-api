@@ -5,13 +5,13 @@ from capstone.models import *
 from capstone.views import *
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'player', Players, 'player')
+router.register(r'players', Players, 'player')
 router.register(r'user', Users, 'user')
-router.register(r'category', Categories, 'category')
-router.register(r'message', Messages, 'message')
-router.register(r'event', Events, 'event')
-router.register(r'game', Games, 'game')
-router.register(r'playerevent', PlayerEvents, 'playerevent')
+router.register(r'categories', Categories, 'category')
+router.register(r'messages', Messages, 'message')
+router.register(r'events', Events, 'event')
+router.register(r'games', Games, 'game')
+router.register(r'playerevents', PlayerEvents, 'playerevent')
 
 
 
