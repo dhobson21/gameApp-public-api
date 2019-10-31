@@ -131,30 +131,45 @@ class Games(ViewSet):
             Response -- JSON serialized list of park ProductCategorys
         """
         # Creating game dictionary of custom info from game object and API boardgame object so user can see info from both
-        bgg = BGGClient()
-
-        games = Game.objects.all()
+        search = self.request.query_params.get('search', None)
         game_list = []
-        collection = []
-        for game in games:
-            BGGObj = bgg.game(game_id=str(game.game))
-            game1={}
-            game1['id'] = game.id
-            game1['name'] = game.name
-            game1["api_id"] = game.game
-            owner = Player.objects.get(user=game.player.user)
-            playerObj = PlayerSerializer(owner, context={'request': request})
-            game1['player'] = playerObj.data
-            game1['host_descrip'] = game.host_descrip
-            game1['max_players'] = BGGObj.max_players
-            game1['min_players'] = BGGObj.min_players
-            game1['category_ids'] = game.category_ids
-            game1['category_names'] = []
-            for category in BGGObj.categories:
-                game1['category_names'].append(category)
-            game1['image'] = BGGObj.image
-            game1['thumb_nail'] = BGGObj.thumbnail
-            game_list.append(game1)
+        if search is None:
+            bgg = BGGClient()
+            games = Game.objects.all()
+            collection = []
+
+            for game in games:
+                BGGObj = bgg.game(game_id=str(game.game))
+                game1={}
+                game1['id'] = game.id
+                game1['name'] = game.name
+                game1["api_id"] = game.game
+                owner = Player.objects.get(user=game.player.user)
+                playerObj = PlayerSerializer(owner, context={'request': request})
+                game1['player'] = playerObj.data
+                game1['host_descrip'] = game.host_descrip
+                game1['max_players'] = BGGObj.max_players
+                game1['min_players'] = BGGObj.min_players
+                game1['category_ids'] = game.category_ids
+                game1['category_names'] = []
+                for category in BGGObj.categories:
+                    game1['category_names'].append(category)
+                game1['image'] = BGGObj.image
+                game1['thumb_nail'] = BGGObj.thumbnail
+                game_list.append(game1)
+        else:
+            # If there is a search query param, we are searching BGG API for game results for user to choose from
+            bgg = BGGClient()
+            results = bgg.games(search)
+            for result in results:
+                game1={}
+                game1["name"] = result.name
+                game1["min_players"] = result.min_players
+                game1["max_players"] = result.max_players
+                game1["api_id"] = result.id
+                game1["description"] = result.description
+                game1["thuhmbnail"] = result.thumbnail
+                game_list.append(game1)
 
 
         # Query param to fetch a logged in user's games
@@ -162,7 +177,9 @@ class Games(ViewSet):
         # query param to fetch games by category
         category = self.request.query_params.get('category', None)
 
-        if self.request.query_params:
+
+
+        if (user_game) or (category):
             if user_game is not None:
                 for game in game_list:
                     if (game['player']['id'] == request.auth.user_id) & (game not in collection):
@@ -174,6 +191,7 @@ class Games(ViewSet):
                     for id in game["category_ids"]:
                         if (str(id) ==category) & (game not in collection):
                             collection.append(game)
+
             game_list = collection
         else:
             pass
