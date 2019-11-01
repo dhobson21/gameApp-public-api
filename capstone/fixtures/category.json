@@ -129,7 +129,7 @@
         "model": "capstone.category",
         "pk": 19,
         "fields": {
-        "name": "CCollectable Components"
+        "name": "Collectible Components"
         }
     },
     {
@@ -325,7 +325,7 @@
         "model": "capstone.category",
         "pk": 47,
         "fields": {
-        "name": "Mocies / TV / Radio theme"
+        "name": "Movies / TV / Radio theme"
         }
     },
     {
@@ -542,7 +542,7 @@
         "model": "capstone.category",
         "pk": 78,
         "fields": {
-        "name": "Vietname War"
+        "name": "Vietnam War"
         }
     },
     {
@@ -578,6 +578,13 @@
         "pk": 83,
         "fields": {
         "name": "Zombies"
+        }
+    },
+    {
+        "model": "capstone.category",
+        "pk": 84,
+        "fields": {
+        "name": "Children's Game"
         }
     }
 ]

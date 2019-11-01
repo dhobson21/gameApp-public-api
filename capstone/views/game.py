@@ -163,11 +163,11 @@ class Games(ViewSet):
             for result in results:
                 game1={}
                 game1["name"] = result.name
-                # game1["min_players"] = result.min_players
-                # game1["max_players"] = result.max_players
+                game1["min_players"] = result.min_players
+                game1["max_players"] = result.max_players
                 game1["api_id"] = result.id
-                # game1["description"] = result.description
-                # game1["thuhmbnail"] = result.thumbnail
+                game1["description"] = result.description
+                game1["image"] = result.image
                 game_list.append(game1)
 
 
