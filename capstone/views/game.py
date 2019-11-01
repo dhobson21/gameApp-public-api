@@ -131,10 +131,10 @@ class Games(ViewSet):
             Response -- JSON serialized list of park ProductCategorys
         """
         # Creating game dictionary of custom info from game object and API boardgame object so user can see info from both
-        search = self.request.query_params.get('search', None)
+        bgg = BGGClient()
+        search_term = self.request.query_params.get('search', None)
         game_list = []
-        if search is None:
-            bgg = BGGClient()
+        if search_term is None:
             games = Game.objects.all()
             collection = []
 
@@ -159,16 +159,15 @@ class Games(ViewSet):
                 game_list.append(game1)
         else:
             # If there is a search query param, we are searching BGG API for game results for user to choose from
-            bgg = BGGClient()
-            results = bgg.games(search)
+            results = bgg.games(search_term)
             for result in results:
                 game1={}
                 game1["name"] = result.name
-                game1["min_players"] = result.min_players
-                game1["max_players"] = result.max_players
+                # game1["min_players"] = result.min_players
+                # game1["max_players"] = result.max_players
                 game1["api_id"] = result.id
-                game1["description"] = result.description
-                game1["thuhmbnail"] = result.thumbnail
+                # game1["description"] = result.description
+                # game1["thuhmbnail"] = result.thumbnail
                 game_list.append(game1)
 
 
