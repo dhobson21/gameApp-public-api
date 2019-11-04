@@ -7,7 +7,7 @@
         "game":"1",
         "address":"123 Fake St",
         "zip_code":"37211",
-        "date":"2019-11-13",
+        "date": "2019-12-19 09:26:03.478039",
         "time": "19:30",
         "recurring":"True",
         "recurring_days":"30"
@@ -21,7 +21,7 @@
         "game":"2",
         "address":"123 Fake St.",
         "zip_code":"37211",
-        "date":"2019-12-25",
+        "date": "2019-12-19 09:26:03.478039",
         "time": "12:30",
         "recurring":"False",
         "recurring_days":null

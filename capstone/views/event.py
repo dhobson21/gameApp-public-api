@@ -5,12 +5,15 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from capstone.models import Player, Game, Event, PlayerEvent
+from capstone.models import Player, Game, Event, PlayerEvent, Message
 from .game import GameSerializer
 from .player import PlayerSerializer
 from .playerEvent import PlayerEventSerializer
 from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
 import datetime
+from datetime import date
+import pytz
+
 
 
 
@@ -89,37 +92,58 @@ class Events(ViewSet):
             Response -- JSON serialized order
         """
         try:
+
             event = Event.objects.get(pk=pk)
+
+
             bgg = BGGClient()
+
+
             BGGObj = bgg.game(game_id=str(event.game.game))
-            event1 = {}
+            event1={}
             event1["id"]=event.id
             event1['name']=event.name
             event1['description']=event.description
             event1['address']=event.address
             event1['zip_code']=event.zip_code
-            event1['date']=event.date
+            # event1['date']=event.date
+            event1['date']=event.date.strftime("%a %b %d, %Y")
+            event1['real_date']=event.date
             event1['time']=event.time
             event1['recurring']=event.recurring
             event1['recurring_days']=event.recurring_days
-            for player in event.player_list:
-                playerObj = PlayerSerializer(player, context={'request': request})
-                event1['player_list'].append(playerObj.data)
-            event1['is_full'] = event.is_full
+
+            # Creating custom game object out of BGG API and game info from user
             game1={}
             game1['name'] = event.game.name
-            player = Player.objects.get(user=event.game.player.user)
+            player = Player.objects.get(user= event.game.owner.user.id)
             playerObj = PlayerSerializer(player, context={'request': request})
-            game1['player'] = playerObj.data
-            game1['host_descrip'] = event.game.host_descrip
-            game1['max_players'] = BGGObj.max_players
+            game1['owner'] = playerObj
+            game1['owner_descrip'] = event.game.host_descrip
             game1['min_players'] = BGGObj.min_players
+            game1['max_players'] = BGGObj.max_players
             game1['categories'] = []
             for category in BGGObj.categories:
                 game1['categories'].append(category)
             game1['image'] = BGGObj.image
             game1['thumb_nail'] = BGGObj.thumbnail
             event1['game'] = game1
+
+            event1['need_players'] = event.need_players
+
+            # Event model method compairing game max_players against player_list and returning a boolean of True if player_list >= max_players
+            event1['is_full'] = event.is_full
+
+            # sending request into event .user_player method to obtain info about logged in user to determine if they are a player on the player_list
+            event.user_player = request
+            event1['user_player'] = event.user_player
+
+            event1['player_list'] = []
+
+                # serializing each player in the event method that gathers a list of approved players----NOT SURE I TO DO THIS
+            for player in event.player_list:
+                playerObj = PlayerSerializer(player, context={'request': request})
+                event1['player_list'].append(playerObj.data)
             return Response(event1)
         except Exception as ex:
             return HttpResponseServerError(ex)
@@ -139,8 +163,7 @@ class Events(ViewSet):
         event.zip_code = request.data["zip_code"]
         event.date = request.data["date"]
         event.time = request.data["time"]
-        event.recurring = request.data["recurring"]
-        event.recurring_days = request.data["recurring_days"]
+
 
         event.save()
 
@@ -174,7 +197,12 @@ class Events(ViewSet):
         """
         try:
             event = Event.objects.get(pk=pk)
+            player_events = PlayerEvent.objects.filter(event=event.id)
+            for player_event in player_events:
+                player_event.delete()
             event.delete()
+
+
 
             return Response({}, status=status.HTTP_204_NO_CONTENT)
 
@@ -205,8 +233,10 @@ class Events(ViewSet):
             event1['description']=event.description
             event1['address']=event.address
             event1['zip_code']=event.zip_code
-            event1['date']=event.date
-            event1['time']=event.time
+            event1['date']=event.date.strftime("%a %b %d, %Y")
+            event1['real_date']=event.date
+            event1['time']=event.time.strftime("%I:%M %p")
+            event1['real_time']=event.time
             event1['recurring']=event.recurring
             event1['recurring_days']=event.recurring_days
 
@@ -243,8 +273,9 @@ class Events(ViewSet):
                 event1['player_list'].append(playerObj.data)
 
             # comparing date of event to today's date. If event has happened--it is not added to event_list and sent back to user
-            today = datetime.date.today()
-            if event1['date'] >=today:
+            today = datetime.datetime.now(pytz.utc)
+            compare = event1['date']
+            if event.date >=today:
                 event_list.append(event1)
         # query params for:
         #  getting events a user is participating in

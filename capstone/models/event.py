@@ -14,7 +14,7 @@ class Event(models.Model):
     description = models.CharField(max_length=300)
     address = models.CharField(max_length=50)
     zip_code = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(5)])
-    date = models.DateField()
+    date = models.DateTimeField()
     time = models.TimeField(default= "00:00")
     recurring = models.BooleanField()
     recurring_days = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(31)], null=True)

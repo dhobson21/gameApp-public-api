@@ -12,6 +12,9 @@ from rest_framework import serializers
 from rest_framework import status
 from capstone.models import Category, Game
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from datetime import date
+from datetime import time
+from datetime import datetime
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
@@ -54,6 +57,7 @@ class Categories(ViewSet):
         Returns:
             Response -- JSON serialized list of park ProductCategorys
         """
+        now = date.today()
         # This only returns game categories that have games that fill that category
         category = Category.objects.all()
         games = Game.objects.all()

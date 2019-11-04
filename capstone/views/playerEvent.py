@@ -58,7 +58,7 @@ class PlayerEvents(ViewSet):
 
 
 
-        new_player_event.event.save()
+        new_player_event.save()
         # if order.payment_type is not "NULL":
         #     ordered_items = order.invoiceline.all()
 
