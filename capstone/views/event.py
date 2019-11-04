@@ -8,7 +8,6 @@ from rest_framework import status
 from capstone.models import Player, Game, Event, PlayerEvent, Message
 from .game import GameSerializer
 from .player import PlayerSerializer
-from .playerEvent import PlayerEventSerializer
 from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
 import datetime
 from datetime import date
@@ -139,11 +138,16 @@ class Events(ViewSet):
             event1['user_player'] = event.user_player
 
             event1['player_list'] = []
+            event1['waiting_list'] = []
 
                 # serializing each player in the event method that gathers a list of approved players----NOT SURE I TO DO THIS
             for player in event.player_list:
                 playerObj = PlayerSerializer(player, context={'request': request})
                 event1['player_list'].append(playerObj.data)
+            for player in event.waiting_list:
+                playerObj = PlayerSerializer(player, context={'request': request})
+                event1['waiting_list'].append(playerObj.data)
+
             return Response(event1)
         except Exception as ex:
             return HttpResponseServerError(ex)
@@ -266,11 +270,17 @@ class Events(ViewSet):
             event1['user_player'] = event.user_player
 
             event1['player_list'] = []
+            event1['waiting_list'] =  []
 
             # serializing each player in the event method that gathers a list of approved players----NOT SURE I TO DO THIS
             for player in event.player_list:
                 playerObj = PlayerSerializer(player, context={'request': request})
                 event1['player_list'].append(playerObj.data)
+
+            for player in event.waiting_list:
+                playerObj = PlayerSerializer(player, context={'request': request})
+                event1['waiting_list'].append(playerObj.data)
+
 
             # comparing date of event to today's date. If event has happened--it is not added to event_list and sent back to user
             today = datetime.datetime.now(pytz.utc)
