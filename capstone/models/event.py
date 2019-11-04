@@ -27,6 +27,16 @@ class Event(models.Model):
             player = Player.objects.get(user=str(playerEvent.player_id))
             playerList.append(player)
         return playerList
+    @property
+    def waiting_list(self):
+
+        reqEvents = self.player_event.filter(is_approved=False)
+        wait_list = []
+        for playerEvent in reqEvents:
+            player = Player.objects.get(user=str(playerEvent.player_id))
+            wait_list.append(player)
+        return wait_list
+
 
     @property
     def is_full(self):

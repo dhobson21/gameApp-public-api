@@ -10,8 +10,9 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from capstone.models import PlayerEvent, Player, Event
+from capstone.models import PlayerEvent, Player, Event, Message
 from .player import PlayerSerializer
+from .message import MessageSerializer
 import datetime
 
 
@@ -47,30 +48,21 @@ class PlayerEvents(ViewSet):
         new_player_event.event = event
 
         new_player_event.has_played = request.data["has_played"]
-        # FIGURE THIS OUT
-        # try:
-        #     neworder = Order.objects.get(customer=customer, payment_type__isnull=True)
-        # except Order.DoesNotExist:
-        #     neworder = Order()
-        #     neworder.created_date = datetime.date.today()
-        #     neworder.customer = customer
-        #     neworder.save()
+
+        new_message = Message()
+        new_message.event = event
+        new_message.sender = player
+        reciever = Player.objects.get(user=event.game.player_id)
+        new_message.reciever = reciever
+        new_message.open_time = None
+        new_message.message = f'{player.user.username} has requested to join {event.name}. What would you like to do?'
+
 
 
 
         new_player_event.save()
-        # if order.payment_type is not "NULL":
-        #     ordered_items = order.invoiceline.all()
+        new_message.save()
 
-        #     for oi in ordered_items:
-        #         ordered_products.add(oi.product)
-
-        #     products = list(ordered_products)
-
-        #     for p in products:
-        #         num_sold = p.item.filter(order=order).count()
-        #         p.quantity = p.new_inventory(num_sold)
-        #         p.save()
 
         serializer = PlayerEventSerializer(new_player_event, context={'request': request})
 
