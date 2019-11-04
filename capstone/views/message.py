@@ -48,11 +48,14 @@ class Messages(ViewSet):
             Response -- JSON serialized product category instance
         """
         new_message = Message()
-        new_message.event = Event.objects.get(pk=request.data["event"])
-        new_message.sender = Player.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=request.data["event"])
+        new_message["event"] = event
+        sender = Player.objects.get(user=request.auth.user)
+        new_message["sender"] = sender
         # Will need to attach id of original message sender to approve/disprove btn to send back as participant
-        new_message.reciever = Player.objects.get(pk=request.data["participant"])
-        new_message.message = request.data["message"]
+        reciever = Player.objects.get(pk=request.data["reciever"])
+        new_message["reciever"] = reciever
+        new_message["message"] = request.data["message"]
 
         serializer = MessageSerializer(new_message, context={'request': request})
 
