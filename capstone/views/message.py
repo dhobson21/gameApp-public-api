@@ -96,6 +96,14 @@ class Messages(ViewSet):
         player = Player.objects.get(user=request.auth.user)
         messages = Message.objects.filter(reciever=player)
 
+        #query param to get users new messages
+        new = self.request.query_params.get('new', None)
+
+        if new is not None:
+           messages= messages.filter(open_time__isnull=False)
+
+
+
         serializer = MessageSerializer(
             messages, many=True, context={'request': request})
         return Response(serializer.data)
