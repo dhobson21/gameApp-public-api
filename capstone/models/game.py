@@ -5,6 +5,7 @@ from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
 
 
 
+
 class Game(models.Model):
 
     game = models.IntegerField()

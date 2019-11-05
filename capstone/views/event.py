@@ -203,8 +203,24 @@ class Events(ViewSet):
             event = Event.objects.get(pk=pk)
             player_events = PlayerEvent.objects.filter(event=event.id)
             for player_event in player_events:
+                if player_event.player.id is not event.game.player_id:
+                    delete_message = Message()
+                    delete_message
+                    delete_message.event = event
+                    sender = Player.objects.get(user=event.game.player_id)
+                    delete_message.sender = sender
+                    reciever = Player.objects.get(user=player_event.player.id)
+                    delete_message.reciever = reciever
+                    delete_message.message = f'{event.game.player.user.username} has cancelled the {event.name} event scheduled for {event.date}. It has been removed from your events calendar'
+                    delete_message.open_time = None
+                    delete_message.save()
                 player_event.delete()
+
             event.delete()
+
+
+
+
 
 
 

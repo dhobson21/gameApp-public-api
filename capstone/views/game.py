@@ -148,6 +148,7 @@ class Games(ViewSet):
                 playerObj = PlayerSerializer(owner, context={'request': request})
                 game1['player'] = playerObj.data
                 game1['host_descrip'] = game.host_descrip
+                game1['game_descrip'] = BGGObj.description
                 game1['max_players'] = BGGObj.max_players
                 game1['min_players'] = BGGObj.min_players
                 game1['category_ids'] = game.category_ids
