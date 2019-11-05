@@ -5,10 +5,12 @@ from .player import Player
 from django.contrib.auth.models import User
 from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
 from django.http import HttpRequest
+from safedelete.models import SafeDeleteModel
+from safedelete.models import SOFT_DELETE
 
 
-class Event(models.Model):
-
+class Event(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE
     name = models.CharField(max_length=50)
     game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
     description = models.CharField(max_length=300)

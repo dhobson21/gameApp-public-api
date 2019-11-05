@@ -89,7 +89,30 @@ class PlayerEvents(ViewSet):
         """
         new_player_event = PlayerEvent.objects.get(pk=pk)
         new_player_event.is_approved = request.data["is_approved"]
-        new_player_event.save()
+        if request.data["is_approved"] == True:
+            new_message = Message()
+            event = Event.objects.get(pk=new_player_event.event.id)
+            new_message.event = event
+            sender = Player.objects.get(user=request.auth.user_id)
+            reciever = Player.objects.get(user=new_player_event.player_id)
+            new_message.reciever = reciever
+            new_message.sender = sender
+            new_message.open_time = None
+            new_message.message = f'{sender.user.username} has approved you to join {event.name}. Event Has Been added to your calendar.'
+            new_message.save()
+            new_player_event.save()
+        else:
+            new_message = Message()
+            event = Event.objects.get(pk=new_player_event.event.id)
+            new_message.event = event
+            sender = Player.objects.get(user=request.auth.user_id)
+            reciever = Player.objects.get(user=new_player_event.player_id)
+            new_message.reciever = reciever
+            new_message.sender = sender
+            new_message.open_time = None
+            new_message.message = f'{sender.user.username} has rejected your request to join {event.name}. Please explore other events!.'
+            new_message.save()
+            new_player_event.delete()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 

@@ -3,8 +3,8 @@
     "model": "auth.user",
     "pk": 1,
     "fields": {
-    "password": "pass1",
-    "last_login": null, "is_superuser": false, "username": "dhobson21", "first_name": "Dustin",
+    "password": "Rockbottom1",
+    "last_login": null, "is_superuser": true, "username": "dhobson21", "first_name": "Dustin",
     "last_name": "Hobson",
     "email": "dhobson@gmail.com",
     "is_staff": false,
@@ -157,5 +157,165 @@
       "zip_code": "37211",
       "user_id": "9"
     }
+  },
+      {
+      "model": "auth.user",
+      "pk": 10,
+      "fields": {
+      "password": "pass3",
+      "last_login": null, "is_superuser": false, "username": "Joe_Yo", "first_name": "Drew",
+      "last_name": "Pazolla",
+      "email": "drew@gmail.com",
+      "is_staff": false,
+      "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+      }
+  },
+  {
+    "model": "capstone.player",
+    "pk": 10,
+    "fields": {
+      "zip_code": "37211",
+      "user_id": "10"
+    }
+  },
+      {
+      "model": "auth.user",
+      "pk": 11,
+      "fields": {
+      "password": "pass3",
+      "last_login": null, "is_superuser": false, "username": "Sam_Man", "first_name": "Drew",
+      "last_name": "Pazolla",
+      "email": "drew@gmail.com",
+      "is_staff": false,
+      "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+      }
+  },
+  {
+    "model": "capstone.player",
+    "pk": 11,
+    "fields": {
+      "zip_code": "37211",
+      "user_id": "11"
+    }
+  },
+      {
+      "model": "auth.user",
+      "pk": 12,
+      "fields": {
+      "password": "pass3",
+      "last_login": null, "is_superuser": false, "username": "JoeShep", "first_name": "Drew",
+      "last_name": "Pazolla",
+      "email": "drew@gmail.com",
+      "is_staff": false,
+      "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+      }
+  },
+  {
+    "model": "capstone.player",
+    "pk": 12,
+    "fields": {
+      "zip_code": "37211",
+      "user_id": "12"
+    }
+  },
+      {
+      "model": "auth.user",
+      "pk": 13,
+      "fields": {
+      "password": "pass3",
+      "last_login": null, "is_superuser": false, "username": "ShaneG", "first_name": "Drew",
+      "last_name": "Pazolla",
+      "email": "drew@gmail.com",
+      "is_staff": false,
+      "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+      }
+  },
+  {
+    "model": "capstone.player",
+    "pk": 13,
+    "fields": {
+      "zip_code": "37211",
+      "user_id": "13"
+    }
+  },
+      {
+      "model": "auth.user",
+      "pk": 14,
+      "fields": {
+      "password": "pass3",
+      "last_login": null, "is_superuser": false, "username": "Doober", "first_name": "Drew",
+      "last_name": "Pazolla",
+      "email": "drew@gmail.com",
+      "is_staff": false,
+      "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+      }
+  },
+  {
+    "model": "capstone.player",
+    "pk": 14,
+    "fields": {
+      "zip_code": "37211",
+      "user_id": "14"
+    }
+  },
+      {
+      "model": "auth.user",
+      "pk": 15,
+      "fields": {
+      "password": "pass3",
+      "last_login": null, "is_superuser": false, "username": "ElijahT", "first_name": "Drew",
+      "last_name": "Pazolla",
+      "email": "drew@gmail.com",
+      "is_staff": false,
+      "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+      }
+  },
+  {
+    "model": "capstone.player",
+    "pk": 15,
+    "fields": {
+      "zip_code": "37211",
+      "user_id": "15"
+    }
+  },
+      {
+      "model": "auth.user",
+      "pk": 16,
+      "fields": {
+      "password": "pass3",
+      "last_login": null, "is_superuser": false, "username": "SteveSteve", "first_name": "Drew",
+      "last_name": "Pazolla",
+      "email": "drew@gmail.com",
+      "is_staff": false,
+      "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+      }
+  },
+  {
+    "model": "capstone.player",
+    "pk": 16,
+    "fields": {
+      "zip_code": "37211",
+      "user_id": "16"
+    }
+  },
+      {
+      "model": "auth.user",
+      "pk": 17,
+      "fields": {
+      "password": "pass3",
+      "last_login": null, "is_superuser": false, "username": "MsPepper", "first_name": "Drew",
+      "last_name": "Pazolla",
+      "email": "drew@gmail.com",
+      "is_staff": false,
+      "is_active": true, "date_joined": "2019-11-23T12:05:21.047Z"
+      }
+  },
+  {
+    "model": "capstone.player",
+    "pk": 17,
+    "fields": {
+      "zip_code": "37211",
+      "user_id": "17"
+    }
   }
- ]
+]
