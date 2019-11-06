@@ -312,51 +312,84 @@ class Events(ViewSet):
         # getting events that are not full
         is_full= self.request.query_params.get('is_full', None)
 
+
+        user= self.request.query_params.get('user', None)
+
         # if there is any query_param then  query param fills up new_list and event_list becomes new list--if not, event_list stays event_list
         if self.request.query_params:
+
+
             if user_player is not None:
                 for event in event_list:
                     if (str(event['user_player'])  == user_player) & (event not in new_list):
                         new_list.append(event)
 
+
             if category is not None:
-                for event in event_list:
-                    for cat in event['game']['categories']:
-                        if (str(cat) == str(category)) & (event not in new_list):
-                            new_list.append(event)
+                if user_player:
+                    for event in new_list:
+                        if category in event['game']['categories']:
+                            pass
+                        else:
+                            new_list.remove(event)
+                else:
+                    for event in event_list:
+                        for cat in event['game']['categories']:
+                            if (str(cat) == str(category)) & (event not in new_list):
+                                new_list.append(event)
+
 
             if zip_code is not None:
-                for event in event_list:
-                    if (str(event['zip_code']) == zip_code) & (event not in new_list):
-                        new_list.append(event)
+                if user_player:
+                    for event in new_list:
+                        if (str(event['zip_code']) == str(zip_code)):
+                            pass
+                        else:
+                            new_list.remove(event)
+                else:
+                    for event in event_list:
+                        if (str(event['zip_code']) == zip_code) & (event not in new_list):
+                            new_list.append(event)
 
             if game is not None:
-                for event in event_list :
-                    if (event['game']['name'].lower() == game.lower()) & (event not in new_list):
-                        new_list.append(event)
+                if user_player:
+                    for event in new_list :
+                        if (event['game']['name'].lower() == game.lower()):
+                            pass
+                        else:
+                            new_list.remove(event)
+                else:
+                    for event in event_list:
+                        if (event['game']['name'].lower() == game.lower()) & (event not in new_list):
+                            new_list.append(event)
+
+            if user is not None:
+                if user_player:
+                    for event in new_list:
+                        if (event['game']['owner']['user']['username'].lower() == user.lower()):
+                            pass
+                        else:
+                            new_list.remove(event)
+                else:
+                    for event in event_list:
+                        if (event['game']['owner']['user']['username'].lower() == user.lower()) & (event not in new_list):
+                            new_list.append(event)
 
             if is_full is not None:
-                for event in event_list:
-                    if(str(event['is_full']) == is_full) & (event not in new_list):
-                        new_list.append(event)
+                if user_player:
+                    for event in event_list:
+                        if(str(event['is_full']) == is_full):
+                            pass
+                    else:
+                        new_list.remove(event)
+                else:
+
+                    for event in event_list:
+                        if(str(event['is_full']) == is_full) & (event not in new_list):
+                            new_list.append(event)
 
             event_list = new_list
         else:
             pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         return Response(event_list)
