@@ -318,7 +318,7 @@ class Events(ViewSet):
         # if there is any query_param then  query param fills up new_list and event_list becomes new list--if not, event_list stays event_list
         if self.request.query_params:
 
-
+            # Would like to come back and work this into its own action instead of clogging up my backend....it works though
             if user_player is not None:
                 for event in event_list:
                     if (str(event['user_player'])  == user_player) & (event not in new_list):

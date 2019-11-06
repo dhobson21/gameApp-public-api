@@ -105,7 +105,7 @@ class PlayerEvents(ViewSet):
             new_message.reciever = reciever
             new_message.sender = sender
             new_message.open_time = None
-            new_message.message = f'{sender.user.username} has approved you to join {event.name}. Event Has Been added to your calendar.'
+            new_message.message = f'{sender.user.username} has approved you to join {event.name}. Event Has Been added to your calendar and address fpr event is listed below and on event item.'
             new_message.type = 'approve'
 
             new_player_event.save()
