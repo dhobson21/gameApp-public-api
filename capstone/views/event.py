@@ -8,6 +8,7 @@ from rest_framework import status
 from capstone.models import Player, Game, Event, PlayerEvent, Message
 from .game import GameSerializer
 from .player import PlayerSerializer
+# from .playerEvent import PlayerEventSerializer
 from boardgamegeek import BGGClient, BGGRestrictSearchResultsTo, BGGChoose
 import datetime
 from datetime import date
@@ -159,6 +160,18 @@ class Events(ViewSet):
             Response -- Empty body with 204 status code
         """
         event = Event.objects.get(pk=pk)
+        for player in event.player_list:
+            if  player.id is not request.auth.user_id:
+                new_message = Message()
+                reciever = Player.objects.get(user=player.user)
+                new_message.reciever = reciever
+                sender = Player.objects.get(user=request.auth.user)
+                new_message.event = event
+                new_message.sender = sender
+                new_message.open_time = None
+                new_message.message = f'{sender.user.username} has updated {event.name}. Please see new details of event below.'
+                new_message.type = 'change'
+                new_message.save()
         event.name = request.data["name"]
         # game = game.objects.get(pk=request.data["game"])
         # event.game = game
@@ -168,28 +181,11 @@ class Events(ViewSet):
         event.date = request.data["date"]
         event.time = request.data["time"]
 
-
         event.save()
+        # Event Change Message Creation
 
 
 
-        # ordered_products = set()
-        # order = Order.objects.get(pk=pk)
-        # payment = Payment.objects.get(pk=request.data["payment_type"])
-        # order.payment_type = payment
-        # order.save()
-        # if order.payment_type is not "NULL":
-        #     ordered_items = order.invoiceline.all()
-
-        #     for oi in ordered_items:
-        #         ordered_products.add(oi.product)
-
-        #     products = list(ordered_products)
-
-        #     for p in products:
-        #         num_sold = p.item.filter(order=order).count()
-        #         p.quantity = p.new_inventory(num_sold)
-        #         p.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
@@ -201,20 +197,21 @@ class Events(ViewSet):
         """
         try:
             event = Event.objects.get(pk=pk)
-            player_events = PlayerEvent.objects.filter(event=event.id)
-            for player_event in player_events:
-                if player_event.player.id is not event.game.player_id:
+            ep_list = PlayerEvent.objects.filter(event=event)
+            for player in ep_list:
+                if  player.id is not request.auth.user_id:
                     delete_message = Message()
                     delete_message
                     delete_message.event = event
                     sender = Player.objects.get(user=event.game.player_id)
                     delete_message.sender = sender
-                    reciever = Player.objects.get(user=player_event.player.id)
+                    reciever = Player.objects.get(user=player.id)
                     delete_message.reciever = reciever
                     delete_message.message = f'{event.game.player.user.username} has cancelled the {event.name} event scheduled for {event.date}. It has been removed from your events calendar'
+                    delete_message.type = 'cancel'
                     delete_message.open_time = None
                     delete_message.save()
-                player_event.delete()
+                player.delete()
 
             event.delete()
 

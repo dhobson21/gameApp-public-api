@@ -7,7 +7,8 @@
             "sender":"1",
             "reciever":"2",
             "message": "Someone wants to Join your game...will you let them?",
-            "open_time": null
+            "open_time": null,
+            "player_event": 1
             }
         },
         {
@@ -18,7 +19,8 @@
             "sender":"2",
             "reciever":"1",
             "message": "You have been approved to join this group",
-            "open_time": null
+            "open_time": null,
+            "player_event": 1
             }
         }
 ]
