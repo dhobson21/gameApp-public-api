@@ -8,11 +8,12 @@
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+import json
 from rest_framework import serializers
 from rest_framework import status
 from capstone.models import PlayerEvent, Player, Event, Message
 from .player import PlayerSerializer
-from .message import MessageSerializer
+from .event import EventSerializer
 import datetime
 
 
@@ -23,6 +24,7 @@ class PlayerEventSerializer(serializers.HyperlinkedModelSerializer):
         serializers
     """
     player = PlayerSerializer(many=False)
+    event=EventSerializer(many=False)
     class Meta:
         model = PlayerEvent
         url = serializers.HyperlinkedIdentityField(
@@ -41,6 +43,7 @@ class PlayerEvents(ViewSet):
         Returns:
             Response -- JSON serialized product category instance
         """
+
         new_player_event = PlayerEvent()
         player = Player.objects.get(user=request.auth.user)
         new_player_event.player = player
@@ -56,11 +59,14 @@ class PlayerEvents(ViewSet):
         new_message.reciever = reciever
         new_message.open_time = None
         new_message.message = f'{player.user.username} has requested to join {event.name}. What would you like to do?'
-
-
-
+        new_message.type='request'
 
         new_player_event.save()
+        id=int(json.dumps(new_player_event.id))
+        player_E= PlayerEvent.objects.get(pk=id)
+        new_message.player_event =player_E
+
+
         new_message.save()
 
 
@@ -76,7 +82,7 @@ class PlayerEvents(ViewSet):
         """
         try:
             player_event = PlayerEvent.objects.get(pk=pk)
-            serializer = PlayerEvent(player_event, context={'request': request})
+            serializer = PlayerEventSerializer(player_event, context={'request': request})
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
@@ -88,10 +94,11 @@ class PlayerEvents(ViewSet):
             Response -- Empty body with 204 status code
         """
         new_player_event = PlayerEvent.objects.get(pk=pk)
-        new_player_event.is_approved = request.data["is_approved"]
-        if request.data["is_approved"] == True:
+        if request.data["is_approved"] == 'true':
+            new_player_event.is_approved = True
             new_message = Message()
             event = Event.objects.get(pk=new_player_event.event.id)
+
             new_message.event = event
             sender = Player.objects.get(user=request.auth.user_id)
             reciever = Player.objects.get(user=new_player_event.player_id)
@@ -99,8 +106,10 @@ class PlayerEvents(ViewSet):
             new_message.sender = sender
             new_message.open_time = None
             new_message.message = f'{sender.user.username} has approved you to join {event.name}. Event Has Been added to your calendar.'
-            new_message.save()
+            new_message.type = 'approve'
+
             new_player_event.save()
+            new_message.save()
         else:
             new_message = Message()
             event = Event.objects.get(pk=new_player_event.event.id)
@@ -111,7 +120,9 @@ class PlayerEvents(ViewSet):
             new_message.sender = sender
             new_message.open_time = None
             new_message.message = f'{sender.user.username} has rejected your request to join {event.name}. Please explore other events!.'
+            new_message.type = 'reject'
             new_message.save()
+            new_player_event.save()
             new_player_event.delete()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -124,6 +135,22 @@ class PlayerEvents(ViewSet):
         """
         try:
             player_event = PlayerEvent.objects.get(pk=pk)
+            if player_event.is_approved is True:
+                host = Player.objects.get(user=player_event.event.game.player)
+                event = Event.objects.get(pk=player_event.event.id)
+                new_message = Message()
+                new_message.reciever = host
+                sender = Player.objects.get(user=request.auth.user)
+                new_message.sender = sender
+                new_message.event = event
+                new_message.open_time = None
+                new_message.message = f'{sender.user.username} dropped out of {player_event.event.name} and has been removed from the active player list.'
+                new_message.type = 'leave'
+                new_message.save()
+
+            message_delete_list = Message.objects.filter(event=event)
+            for message in message_delete_list:
+                message.delete()
             player_event.delete()
 
             return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -140,30 +167,14 @@ class PlayerEvents(ViewSet):
         Returns:
             Response -- JSON serialized list of playerEvents
         """
+
         playerEvents = PlayerEvent.objects.all()
-        # ordered_products = set()
 
-        # Support filtering OrderProducts by area id
-        # area = self.request.query_params.get('area', None)
-        # if area is not None:
-        #     OrderProducts = OrderProducts.filter(area__id=area)
-        # productId = self.request.query_params.get('product_id', None)
-        # order = self.request.query_params.get('order_id', None)
-        # if order is not None:
-        #     OrderProducts = OrderProducts.filter(order__id=order)
-        #     # if productId is None:
-            #     for op in OrderProducts:
-            #         ordered_products.add(op.product)
 
-            #     product_items = list(ordered_products)
-
-            #     for p in product_items:
-            #         num = p.item.filter(order__id=order).count()
-            #         p.new_cart(num)
-            #         p.save()
-
-        # if productId is not None:
-        #     OrderProducts = OrderProducts.filter(product__id=productId)
+        unapproved = self.request.query_params.get('unapproved', None)
+        if unapproved is not None:
+            for player in playerEvents:
+                playerEvents = playerEvents.filter(is_approved= False)
 
         serializer = PlayerEventSerializer(
             playerEvents, many=True, context={'request': request})

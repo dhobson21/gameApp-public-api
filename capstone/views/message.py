@@ -12,9 +12,10 @@ from rest_framework import serializers
 from rest_framework import status
 from capstone.models import Message
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from capstone.models import Event, Player
+from capstone.models import Event, Player, PlayerEvent
 from .event import EventSerializer
 from .player import PlayerSerializer
+from .playerEvent import PlayerEventSerializer
 import datetime
 
 
@@ -27,13 +28,15 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
     event = EventSerializer(many=False)
     sender = PlayerSerializer(many=False)
     reciever = PlayerSerializer(many=False)
+    player_event = PlayerEventSerializer(many=False)
     class Meta:
         model = Message
+
         url = serializers.HyperlinkedIdentityField(
             view_name='messages',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'event','sender','reciever','message', 'open_time')
+        fields = ('id', 'url', 'event','sender','reciever','player_event','message', 'type', 'open_time')
         depth = 2
 
 
@@ -56,6 +59,7 @@ class Messages(ViewSet):
         reciever = Player.objects.get(pk=request.data["reciever"])
         new_message["reciever"] = reciever
         new_message["message"] = request.data["message"]
+        new_message["type"] = request.data["type"]
 
         serializer = MessageSerializer(new_message, context={'request': request})
 
@@ -100,7 +104,7 @@ class Messages(ViewSet):
         new = self.request.query_params.get('new', None)
 
         if new is not None:
-           messages= messages.filter(open_time__isnull=False)
+            messages= messages.filter(open_time__isnull= True)
 
 
 
