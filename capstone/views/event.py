@@ -139,15 +139,12 @@ class Events(ViewSet):
             event1['user_player'] = event.user_player
 
             event1['player_list'] = []
-            event1['waiting_list'] = []
 
                 # serializing each player in the event method that gathers a list of approved players----NOT SURE I TO DO THIS
             for player in event.player_list:
                 playerObj = PlayerSerializer(player, context={'request': request})
                 event1['player_list'].append(playerObj.data)
-            for player in event.waiting_list:
-                playerObj = PlayerSerializer(player, context={'request': request})
-                event1['waiting_list'].append(playerObj.data)
+
 
             return Response(event1)
         except Exception as ex:
@@ -201,11 +198,10 @@ class Events(ViewSet):
             for player in ep_list:
                 if  player.id is not request.auth.user_id:
                     delete_message = Message()
-                    delete_message
                     delete_message.event = event
                     sender = Player.objects.get(user=event.game.player_id)
                     delete_message.sender = sender
-                    reciever = Player.objects.get(user=player.id)
+                    reciever = Player.objects.get(user=player.player_id)
                     delete_message.reciever = reciever
                     delete_message.message = f'{event.game.player.user.username} has cancelled the {event.name} event scheduled for {event.date}. It has been removed from your events calendar'
                     delete_message.type = 'cancel'
@@ -235,7 +231,7 @@ class Events(ViewSet):
         Returns:
             Response -- JSON serialized list of park areas
         """
-        events = Event.objects.all()
+        events = Event.objects.all().order_by("date")
         bgg = BGGClient()
         event_list = []
         new_list = []
@@ -277,22 +273,22 @@ class Events(ViewSet):
 
             # Event model method compairing game max_players against player_list and returning a boolean of True if player_list >= max_players
             event1['is_full'] = event.is_full
+            event.pending_request = request
+            event1['pending_request'] = event.pending_request
 
             # sending request into event .user_player method to obtain info about logged in user to determine if they are a player on the player_list
             event.user_player = request
             event1['user_player'] = event.user_player
 
             event1['player_list'] = []
-            event1['waiting_list'] =  []
+
 
             # serializing each player in the event method that gathers a list of approved players----NOT SURE I TO DO THIS
             for player in event.player_list:
                 playerObj = PlayerSerializer(player, context={'request': request})
                 event1['player_list'].append(playerObj.data)
 
-            for player in event.waiting_list:
-                playerObj = PlayerSerializer(player, context={'request': request})
-                event1['waiting_list'].append(playerObj.data)
+
 
 
             # comparing date of event to today's date. If event has happened--it is not added to event_list and sent back to user
@@ -389,7 +385,7 @@ class Events(ViewSet):
                             new_list.append(event)
 
             event_list = new_list
+
         else:
             pass
-
         return Response(event_list)

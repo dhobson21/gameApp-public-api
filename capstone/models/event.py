@@ -29,15 +29,6 @@ class Event(SafeDeleteModel):
             player = Player.objects.get(user=str(playerEvent.player_id))
             playerList.append(player)
         return playerList
-    @property
-    def waiting_list(self):
-
-        reqEvents = self.player_event.filter(is_approved=False)
-        wait_list = []
-        for playerEvent in reqEvents:
-            player = Player.objects.get(user=str(playerEvent.player_id))
-            wait_list.append(player)
-        return wait_list
 
 
     @property
@@ -67,7 +58,7 @@ class Event(SafeDeleteModel):
         try:
             return self.__user_player
         except AttributeError:
-            return "error somewhere"
+            return "Nah dawg"
 
     @user_player.setter
     def user_player(self, request):
@@ -76,6 +67,23 @@ class Event(SafeDeleteModel):
         for player in self.player_list:
             if player.id == id:
                 self.__user_player = True
+
+    @property
+    def pending_request(self):
+        try:
+            return self.__pending_request
+        except AttributeError:
+            return "Not gonna be able to do it"
+
+    @pending_request.setter
+    def pending_request(self, request):
+        id = request.auth.user_id
+        self.__pending_request = False
+        player_events = self.player_event.all()
+        for player in player_events:
+            if player.is_approved is False and player.player_id == id:
+                self.__pending_request = True
+
 
 
 
