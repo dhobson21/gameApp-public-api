@@ -173,16 +173,16 @@ class Games(ViewSet):
 
 
         # Query param to fetch a logged in user's games
-        user_game = self.request.query_params.get('user', None)
+        user_game = self.request.query_params.get('user_game', None)
         # query param to fetch games by category
         category = self.request.query_params.get('category', None)
 
 
 
-        if (user_game) or (category):
+        if (user_game is not None) or (category is not None):
             if user_game is not None:
                 for game in game_list:
-                    if (game['player']['id'] == request.auth.user_id) & (game not in collection):
+                    if (+game['player']['id'] == +request.auth.user_id) & (game not in collection):
                         collection.append(game)
 
 
