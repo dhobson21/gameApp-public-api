@@ -76,7 +76,7 @@ class Events(ViewSet):
         player = Player.objects.get(user=request.auth.user)
         new_player_event.player = player
         event = Event.objects.get(pk= int(json.dumps(new_event.id)))
-        new_player_event.has_played = request.data['has_played']
+        new_player_event.has_played = "True"
         new_player_event.is_approved = "True"
         new_player_event.event = event
 

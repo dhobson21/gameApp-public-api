@@ -98,7 +98,7 @@ class Messages(ViewSet):
             Response -- JSON serialized list of park ProductCategorys
         """
         player = Player.objects.get(user=request.auth.user)
-        messages = Message.objects.filter(reciever=player).order_by("id", Reverse=True)
+        messages = Message.objects.filter(reciever=player)
 
         #query param to get users new messages
         new = self.request.query_params.get('new', None)
