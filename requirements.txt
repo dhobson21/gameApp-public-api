@@ -4,7 +4,7 @@ boardgamegeek2==1.0.1
 certifi==2019.9.11
 chardet==3.0.4
 colorama==0.4.1
-Django==2.2.6
+Django==2.2.13
 django-cors-headers==3.1.1
 djangorestframework==3.10.3
 idna==2.8
